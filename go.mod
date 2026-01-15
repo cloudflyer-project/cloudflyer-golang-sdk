@@ -4,9 +4,10 @@ go 1.24.0
 
 require (
 	github.com/Noooste/azuretls-client v1.12.3
-	github.com/cloudflyer-project/masktunnel v0.0.0
-	github.com/linksocks/linksocks v0.0.0
+	github.com/cloudflyer-project/masktunnel v1.0.7
+	github.com/linksocks/linksocks v1.7.7
 	github.com/rs/zerolog v1.34.0
+	github.com/spf13/cobra v1.10.2
 )
 
 require (
@@ -32,7 +33,6 @@ require (
 	github.com/mileusna/useragent v1.3.4 // indirect
 	github.com/quic-go/qpack v0.5.1 // indirect
 	github.com/refraction-networking/utls v1.7.3 // indirect
-	github.com/spf13/cobra v1.10.2 // indirect
 	github.com/spf13/pflag v1.0.10 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.65.0 // indirect
@@ -45,7 +45,3 @@ require (
 	golang.org/x/text v0.28.0 // indirect
 	golang.org/x/tools v0.35.0 // indirect
 )
-
-replace github.com/linksocks/linksocks => ../../ref/linksocks
-
-replace github.com/cloudflyer-project/masktunnel => ../../ref/masktunnel
