@@ -1,0 +1,51 @@
+module github.com/cloudflyer-project/cloudflyer-golang-sdk
+
+go 1.24.0
+
+require (
+	github.com/Noooste/azuretls-client v1.12.3
+	github.com/cloudflyer-project/masktunnel v0.0.0
+	github.com/linksocks/linksocks v0.0.0
+	github.com/rs/zerolog v1.34.0
+)
+
+require (
+	github.com/Noooste/fhttp v1.0.15 // indirect
+	github.com/Noooste/go-socks4 v0.0.2 // indirect
+	github.com/Noooste/uquic-go v0.0.31 // indirect
+	github.com/Noooste/utls v1.3.19 // indirect
+	github.com/Noooste/websocket v1.0.3 // indirect
+	github.com/andybalholm/brotli v1.2.0 // indirect
+	github.com/bdandy/go-errors v1.2.2 // indirect
+	github.com/cloudflare/circl v1.6.1 // indirect
+	github.com/cristalhq/base64 v0.1.2 // indirect
+	github.com/fatih/color v1.18.0 // indirect
+	github.com/gaukas/clienthellod v0.4.2 // indirect
+	github.com/gaukas/godicttls v0.0.4 // indirect
+	github.com/google/gopacket v1.1.19 // indirect
+	github.com/google/uuid v1.6.0 // indirect
+	github.com/gorilla/websocket v1.5.3 // indirect
+	github.com/inconshreveable/mousetrap v1.1.0 // indirect
+	github.com/klauspost/compress v1.18.0 // indirect
+	github.com/mattn/go-colorable v0.1.14 // indirect
+	github.com/mattn/go-isatty v0.0.20 // indirect
+	github.com/mileusna/useragent v1.3.4 // indirect
+	github.com/quic-go/qpack v0.5.1 // indirect
+	github.com/refraction-networking/utls v1.7.3 // indirect
+	github.com/spf13/cobra v1.10.2 // indirect
+	github.com/spf13/pflag v1.0.10 // indirect
+	github.com/valyala/bytebufferpool v1.0.0 // indirect
+	github.com/valyala/fasthttp v1.65.0 // indirect
+	go.uber.org/mock v0.5.2 // indirect
+	golang.org/x/crypto v0.41.0 // indirect
+	golang.org/x/mod v0.26.0 // indirect
+	golang.org/x/net v0.43.0 // indirect
+	golang.org/x/sync v0.16.0 // indirect
+	golang.org/x/sys v0.35.0 // indirect
+	golang.org/x/text v0.28.0 // indirect
+	golang.org/x/tools v0.35.0 // indirect
+)
+
+replace github.com/linksocks/linksocks => ../../ref/linksocks
+
+replace github.com/cloudflyer-project/masktunnel => ../../ref/masktunnel
