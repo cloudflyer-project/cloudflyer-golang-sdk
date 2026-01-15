@@ -296,7 +296,7 @@ func TestCreateTaskRequest(t *testing.T) {
 		}
 
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(CreateTaskResponse{
+		_ = json.NewEncoder(w).Encode(CreateTaskResponse{
 			TaskID:  "task-123",
 			ErrorID: 0,
 		})
@@ -321,7 +321,7 @@ func TestTaskResultPolling(t *testing.T) {
 		w.Header().Set("Content-Type", "application/json")
 
 		if r.URL.Path == "/api/createTask" {
-			json.NewEncoder(w).Encode(CreateTaskResponse{
+			_ = json.NewEncoder(w).Encode(CreateTaskResponse{
 				TaskID:  "task-123",
 				ErrorID: 0,
 			})
@@ -331,11 +331,11 @@ func TestTaskResultPolling(t *testing.T) {
 		if r.URL.Path == "/api/getTaskResult" || r.URL.Path == "/api/waitTaskResult" {
 			callCount++
 			if callCount < 2 {
-				json.NewEncoder(w).Encode(TaskResult{
+				_ = json.NewEncoder(w).Encode(TaskResult{
 					Status: "processing",
 				})
 			} else {
-				json.NewEncoder(w).Encode(TaskResult{
+				_ = json.NewEncoder(w).Encode(TaskResult{
 					Status:  "completed",
 					Success: true,
 					Result: map[string]interface{}{
@@ -373,7 +373,7 @@ func TestTaskResultPolling(t *testing.T) {
 func TestTaskResultError(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(TaskResult{
+		_ = json.NewEncoder(w).Encode(TaskResult{
 			Status:  "failed",
 			Success: false,
 			Error:   "task execution failed",

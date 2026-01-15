@@ -526,7 +526,7 @@ func (p *TransparentProxy) handleHTTP(w http.ResponseWriter, req *http.Request) 
 			// Return original response on failure
 			copyHeaders(w.Header(), resp.Header)
 			w.WriteHeader(resp.StatusCode)
-			w.Write(body)
+			_, _ = w.Write(body)
 			return
 		}
 
@@ -549,7 +549,7 @@ func (p *TransparentProxy) handleHTTP(w http.ResponseWriter, req *http.Request) 
 		// Reset body for retry
 		if req.Body != nil {
 			if seeker, ok := req.Body.(io.Seeker); ok {
-				seeker.Seek(0, io.SeekStart)
+				_, _ = seeker.Seek(0, io.SeekStart)
 			}
 		}
 
@@ -563,14 +563,14 @@ func (p *TransparentProxy) handleHTTP(w http.ResponseWriter, req *http.Request) 
 		// Copy retry response
 		copyHeaders(w.Header(), retryResp.Header)
 		w.WriteHeader(retryResp.StatusCode)
-		io.Copy(w, retryResp.Body)
+		_, _ = io.Copy(w, retryResp.Body)
 		return
 	}
 
 	// Copy original response
 	copyHeaders(w.Header(), resp.Header)
 	w.WriteHeader(resp.StatusCode)
-	w.Write(body)
+	_, _ = w.Write(body)
 }
 
 // handleConnect handles HTTPS CONNECT requests.
@@ -597,13 +597,13 @@ func (p *TransparentProxy) handleConnect(w http.ResponseWriter, req *http.Reques
 		targetConn, err = net.DialTimeout("tcp", req.Host, 30*time.Second)
 	}
 	if err != nil {
-		clientConn.Write([]byte("HTTP/1.1 502 Bad Gateway\r\n\r\n"))
+		_, _ = clientConn.Write([]byte("HTTP/1.1 502 Bad Gateway\r\n\r\n"))
 		return
 	}
 	defer targetConn.Close()
 
 	// Send 200 Connection Established
-	clientConn.Write([]byte("HTTP/1.1 200 Connection Established\r\n\r\n"))
+	_, _ = clientConn.Write([]byte("HTTP/1.1 200 Connection Established\r\n\r\n"))
 
 	// Tunnel data
 	var wg sync.WaitGroup
@@ -611,12 +611,12 @@ func (p *TransparentProxy) handleConnect(w http.ResponseWriter, req *http.Reques
 
 	go func() {
 		defer wg.Done()
-		io.Copy(targetConn, clientConn)
+		_, _ = io.Copy(targetConn, clientConn)
 	}()
 
 	go func() {
 		defer wg.Done()
-		io.Copy(clientConn, targetConn)
+		_, _ = io.Copy(clientConn, targetConn)
 	}()
 
 	wg.Wait()
@@ -655,7 +655,7 @@ func (p *TransparentProxy) connectViaProxy(target string) (net.Conn, error) {
 	}
 
 	connectReq += "\r\n"
-	conn.Write([]byte(connectReq))
+	_, _ = conn.Write([]byte(connectReq))
 
 	// Read response
 	reader := bufio.NewReader(conn)
