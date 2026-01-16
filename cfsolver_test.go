@@ -499,8 +499,8 @@ func TestIntegration_SolveCloudflare(t *testing.T) {
 	)
 	defer solver.Close()
 
-	// Test solving a Cloudflare challenge
-	result, err := solver.SolveCloudflare("https://nowsecure.nl")
+	// Test solving a Cloudflare challenge (using demo URL from examples)
+	result, err := solver.SolveCloudflare("https://cloudflyer.zetx.site/demo/challenge")
 	if err != nil {
 		t.Fatalf("SolveCloudflare failed: %v", err)
 	}
@@ -529,7 +529,8 @@ func TestIntegration_GetProtectedPage(t *testing.T) {
 	)
 	defer solver.Close()
 
-	resp, err := solver.Get("https://nowsecure.nl")
+	// Using demo URL from examples
+	resp, err := solver.Get("https://cloudflyer.zetx.site/demo/challenge")
 	if err != nil {
 		t.Fatalf("Get failed: %v", err)
 	}
@@ -556,10 +557,10 @@ func TestIntegration_SolveTurnstile(t *testing.T) {
 	)
 	defer solver.Close()
 
-	// Use a known Turnstile demo page
+	// Using demo URL and siteKey from examples
 	token, err := solver.SolveTurnstile(
-		"https://2captcha.com/demo/cloudflare-turnstile",
-		"0x4AAAAAAAVrOwQWPlm3Bnr5",
+		"https://cloudflyer.zetx.site/demo/turnstile",
+		"0x4AAAAAACJkAlPHW8xr1T2J",
 	)
 	if err != nil {
 		t.Fatalf("SolveTurnstile failed: %v", err)
@@ -582,8 +583,8 @@ func TestIntegration_CacheReuse(t *testing.T) {
 	)
 	defer solver.Close()
 
-	// First request - should solve challenge
-	resp1, err := solver.Get("https://nowsecure.nl")
+	// First request - should solve challenge (using demo URL from examples)
+	resp1, err := solver.Get("https://cloudflyer.zetx.site/demo/challenge")
 	if err != nil {
 		t.Fatalf("First Get failed: %v", err)
 	}
@@ -591,7 +592,7 @@ func TestIntegration_CacheReuse(t *testing.T) {
 
 	// Second request - should use cached clearance
 	start := time.Now()
-	resp2, err := solver.Get("https://nowsecure.nl")
+	resp2, err := solver.Get("https://cloudflyer.zetx.site/demo/challenge")
 	if err != nil {
 		t.Fatalf("Second Get failed: %v", err)
 	}
@@ -618,7 +619,8 @@ func TestIntegration_ContextCancellation(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
 	defer cancel()
 
-	_, err := solver.SolveCloudflareContext(ctx, "https://nowsecure.nl")
+	// Using demo URL from examples
+	_, err := solver.SolveCloudflareContext(ctx, "https://cloudflyer.zetx.site/demo/challenge")
 	if err == nil {
 		t.Log("Request completed before timeout (this is okay)")
 	} else {
@@ -664,7 +666,8 @@ func TestIntegration_APIKeyValidation(t *testing.T) {
 	)
 	defer solver.Close()
 
-	_, err := solver.SolveCloudflare("https://nowsecure.nl")
+	// Using demo URL from examples
+	_, err := solver.SolveCloudflare("https://cloudflyer.zetx.site/demo/challenge")
 	if err == nil {
 		t.Error("Expected error with invalid API key")
 	}
