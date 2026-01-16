@@ -1,0 +1,14 @@
+[tool.bumpversion]
+current_version = "0.0.0"
+parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)"
+serialize = ["{major}.{minor}.{patch}"]
+search = "{current_version}"
+replace = "{new_version}"
+commit = true
+tag = true
+tag_name = "v{new_version}"
+tag_message = "Release v{new_version}"
+message = "chore: bump version to {new_version}"
+
+# Go modules use git tags for versioning, no file changes needed
+# The tag will be created automatically when bumping version

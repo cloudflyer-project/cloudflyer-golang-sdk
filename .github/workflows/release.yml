@@ -55,21 +55,49 @@ jobs:
       - name: Build CLI binaries
         run: |
           mkdir -p dist
+          VERSION="${{ steps.version.outputs.version }}"
           
-          # Linux AMD64
-          GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o dist/cfsolver-linux-amd64 ./cmd/cfsolver
+          # Linux
+          GOOS=linux GOARCH=amd64 go build -ldflags="-s -w -X main.version=$VERSION" -o dist/cfsolver-linux-amd64 ./cmd/cfsolver
+          GOOS=linux GOARCH=arm64 go build -ldflags="-s -w -X main.version=$VERSION" -o dist/cfsolver-linux-arm64 ./cmd/cfsolver
+          GOOS=linux GOARCH=386 go build -ldflags="-s -w -X main.version=$VERSION" -o dist/cfsolver-linux-386 ./cmd/cfsolver
+          GOOS=linux GOARCH=arm GOARM=7 go build -ldflags="-s -w -X main.version=$VERSION" -o dist/cfsolver-linux-armv7 ./cmd/cfsolver
+          GOOS=linux GOARCH=arm GOARM=6 go build -ldflags="-s -w -X main.version=$VERSION" -o dist/cfsolver-linux-armv6 ./cmd/cfsolver
+          GOOS=linux GOARCH=mips64le go build -ldflags="-s -w -X main.version=$VERSION" -o dist/cfsolver-linux-mips64le ./cmd/cfsolver
+          GOOS=linux GOARCH=ppc64le go build -ldflags="-s -w -X main.version=$VERSION" -o dist/cfsolver-linux-ppc64le ./cmd/cfsolver
+          GOOS=linux GOARCH=s390x go build -ldflags="-s -w -X main.version=$VERSION" -o dist/cfsolver-linux-s390x ./cmd/cfsolver
+          GOOS=linux GOARCH=riscv64 go build -ldflags="-s -w -X main.version=$VERSION" -o dist/cfsolver-linux-riscv64 ./cmd/cfsolver
           
-          # Linux ARM64
-          GOOS=linux GOARCH=arm64 go build -ldflags="-s -w" -o dist/cfsolver-linux-arm64 ./cmd/cfsolver
+          # macOS
+          GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w -X main.version=$VERSION" -o dist/cfsolver-darwin-amd64 ./cmd/cfsolver
+          GOOS=darwin GOARCH=arm64 go build -ldflags="-s -w -X main.version=$VERSION" -o dist/cfsolver-darwin-arm64 ./cmd/cfsolver
           
-          # macOS AMD64
-          GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o dist/cfsolver-darwin-amd64 ./cmd/cfsolver
+          # Windows
+          GOOS=windows GOARCH=amd64 go build -ldflags="-s -w -X main.version=$VERSION" -o dist/cfsolver-windows-amd64.exe ./cmd/cfsolver
+          GOOS=windows GOARCH=386 go build -ldflags="-s -w -X main.version=$VERSION" -o dist/cfsolver-windows-386.exe ./cmd/cfsolver
+          GOOS=windows GOARCH=arm64 go build -ldflags="-s -w -X main.version=$VERSION" -o dist/cfsolver-windows-arm64.exe ./cmd/cfsolver
           
-          # macOS ARM64 (Apple Silicon)
-          GOOS=darwin GOARCH=arm64 go build -ldflags="-s -w" -o dist/cfsolver-darwin-arm64 ./cmd/cfsolver
+          # FreeBSD
+          GOOS=freebsd GOARCH=amd64 go build -ldflags="-s -w -X main.version=$VERSION" -o dist/cfsolver-freebsd-amd64 ./cmd/cfsolver
+          GOOS=freebsd GOARCH=arm64 go build -ldflags="-s -w -X main.version=$VERSION" -o dist/cfsolver-freebsd-arm64 ./cmd/cfsolver
           
-          # Windows AMD64
-          GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o dist/cfsolver-windows-amd64.exe ./cmd/cfsolver
+          # OpenBSD
+          GOOS=openbsd GOARCH=amd64 go build -ldflags="-s -w -X main.version=$VERSION" -o dist/cfsolver-openbsd-amd64 ./cmd/cfsolver
+          GOOS=openbsd GOARCH=arm64 go build -ldflags="-s -w -X main.version=$VERSION" -o dist/cfsolver-openbsd-arm64 ./cmd/cfsolver
+          
+          # NetBSD
+          GOOS=netbsd GOARCH=amd64 go build -ldflags="-s -w -X main.version=$VERSION" -o dist/cfsolver-netbsd-amd64 ./cmd/cfsolver
+          GOOS=netbsd GOARCH=arm64 go build -ldflags="-s -w -X main.version=$VERSION" -o dist/cfsolver-netbsd-arm64 ./cmd/cfsolver
+          
+          # DragonFly BSD
+          GOOS=dragonfly GOARCH=amd64 go build -ldflags="-s -w -X main.version=$VERSION" -o dist/cfsolver-dragonfly-amd64 ./cmd/cfsolver
+          
+          # Solaris/Illumos
+          GOOS=solaris GOARCH=amd64 go build -ldflags="-s -w -X main.version=$VERSION" -o dist/cfsolver-solaris-amd64 ./cmd/cfsolver
+          GOOS=illumos GOARCH=amd64 go build -ldflags="-s -w -X main.version=$VERSION" -o dist/cfsolver-illumos-amd64 ./cmd/cfsolver
+          
+          # Android
+          GOOS=android GOARCH=arm64 go build -ldflags="-s -w -X main.version=$VERSION" -o dist/cfsolver-android-arm64 ./cmd/cfsolver
 
       - name: Create checksums
         run: |
@@ -81,7 +109,7 @@ jobs:
         with:
           name: "Go SDK ${{ steps.version.outputs.version }}"
           tag_name: ${{ github.ref_name }}
-          draft: false
+          draft: true
           prerelease: ${{ contains(steps.version.outputs.version, '-') }}
           generate_release_notes: true
           files: |
