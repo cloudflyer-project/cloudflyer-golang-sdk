@@ -29,10 +29,10 @@ type CloudflareSolver struct {
 	usePolling      bool
 	pollingInterval time.Duration
 	timeout         time.Duration
-	userAgent    string
-	impersonate  string
-	useLinkSocks bool
-	useCache     bool
+	userAgent       string
+	impersonate     string
+	useLinkSocks    bool
+	useCache        bool
 
 	session          *azuretls.Session
 	apiClient        *http.Client
