@@ -48,6 +48,14 @@ func WithUsePolling(usePolling bool) Option {
 	}
 }
 
+// WithPollingInterval sets the interval between polling attempts when usePolling is true.
+// Default is 2 seconds.
+func WithPollingInterval(interval time.Duration) Option {
+	return func(s *CloudflareSolver) {
+		s.pollingInterval = interval
+	}
+}
+
 // WithTimeout sets the request timeout.
 func WithTimeout(timeout time.Duration) Option {
 	return func(s *CloudflareSolver) {

@@ -19,15 +19,16 @@ import (
 
 // CloudflareSolver is an HTTP client that automatically bypasses Cloudflare challenges.
 type CloudflareSolver struct {
-	apiKey       string
-	apiBase      string
-	solve        bool
-	onChallenge  bool
-	proxy        string
-	apiProxy     string
-	taskProxy    string // Proxy for the solver task (passed to API)
-	usePolling   bool
-	timeout      time.Duration
+	apiKey          string
+	apiBase         string
+	solve           bool
+	onChallenge     bool
+	proxy           string
+	apiProxy        string
+	taskProxy       string // Proxy for the solver task (passed to API)
+	usePolling      bool
+	pollingInterval time.Duration
+	timeout         time.Duration
 	userAgent    string
 	impersonate  string
 	useLinkSocks bool
@@ -103,17 +104,18 @@ func normalizeProxyString(proxy string) string {
 // New creates a new CloudflareSolver with the given API key and options.
 func New(apiKey string, opts ...Option) *CloudflareSolver {
 	s := &CloudflareSolver{
-		apiKey:         apiKey,
-		apiBase:        "https://solver.zetx.site",
-		solve:          true,
-		onChallenge:    true,
-		usePolling:     false,
-		timeout:        30 * time.Second,
-		cookies:        make(map[string]map[string]string),
-		impersonate:    "chrome",
-		useLinkSocks:   true, // Enable LinkSocks by default
-		useCache:       true, // Enable cache by default
-		clearanceCache: make(map[string]*ClearanceData),
+		apiKey:          apiKey,
+		apiBase:         "https://solver.zetx.site",
+		solve:           true,
+		onChallenge:     true,
+		usePolling:      false,
+		pollingInterval: 2 * time.Second,
+		timeout:         30 * time.Second,
+		cookies:         make(map[string]map[string]string),
+		impersonate:     "chrome",
+		useLinkSocks:    true, // Enable LinkSocks by default
+		useCache:        true, // Enable cache by default
+		clearanceCache:  make(map[string]*ClearanceData),
 	}
 
 	for _, opt := range opts {
@@ -411,7 +413,7 @@ func (s *CloudflareSolver) waitForResult(ctx context.Context, taskID string, tim
 		if err != nil {
 			cancel()
 			if s.usePolling {
-				time.Sleep(2 * time.Second)
+				time.Sleep(s.pollingInterval)
 			}
 			continue
 		}
@@ -422,7 +424,7 @@ func (s *CloudflareSolver) waitForResult(ctx context.Context, taskID string, tim
 
 		if err != nil || resp.StatusCode != 200 {
 			if s.usePolling {
-				time.Sleep(2 * time.Second)
+				time.Sleep(s.pollingInterval)
 			}
 			continue
 		}
@@ -434,7 +436,7 @@ func (s *CloudflareSolver) waitForResult(ctx context.Context, taskID string, tim
 
 		if result.Status == "processing" {
 			if s.usePolling {
-				time.Sleep(2 * time.Second)
+				time.Sleep(s.pollingInterval)
 			}
 			continue
 		}
