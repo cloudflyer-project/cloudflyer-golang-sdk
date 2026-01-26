@@ -67,7 +67,7 @@ func (m *LinkSocksManager) getConfig() (*LinkSocksConfig, error) {
 		return m.config, nil
 	}
 
-	req, err := http.NewRequest("POST", m.apiBase+"/api/linksocks/getLinkSocks", nil)
+	req, err := http.NewRequest("POST", m.apiBase+"/getLinkSocks", nil)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create request: %w", err)
 	}
